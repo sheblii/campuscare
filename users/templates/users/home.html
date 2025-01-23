@@ -1,0 +1,28 @@
+{% extends 'users/base.html' %}
+
+{% block title %}
+  CampusCare - Your Campus Companion
+{% endblock %}
+
+{% block content %}
+  <div class="container-fluid">
+    <div class="jumbotron">
+      <h1 class="display-4">Welcome, {{ user.first_name.title|default:'Student' }}</h1>
+      <p class="lead">CampusCare: Your Comprehensive Campus Solution - Empowering Students Through Technology</p>
+      <hr class="my-4" />
+
+      <div class="row">
+        <div class="col-12 text-center mt-4">
+          {% if user.is_authenticated %}
+            <a class="btn btn-success btn-lg mt-3" href="{% url 'calculate' %}" role="button">Grade Calculator</a>
+            <a class="btn btn-primary btn-lg mt-3" href="{% url 'forum:question_list' %}" role="button">Forum</a>
+            <a class="btn btn-success btn-lg mt-3" href="{% url 'jobportal' %}" role="button">Job Portal</a>
+            <a class="btn btn-success btn-lg mt-3" href="{% url 'news' %}" role="button">News</a>
+          {% else %}
+
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

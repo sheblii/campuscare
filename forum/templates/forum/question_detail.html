@@ -1,0 +1,124 @@
+{% extends 'users/base.html' %}
+{% block title %}
+  {{ question.title }}
+{% endblock %}
+
+{% block content %}
+  <style>
+    /* Custom CSS for modern design */
+    .question-card {
+      background: linear-gradient(to bottom right, #ffffff, #f8fafc);
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s ease-in-out;
+    }
+    
+    .question-card:hover {
+      transform: translateY(-2px);
+    }
+    
+    .author-badge {
+      background: linear-gradient(45deg, #22c55e, #16a34a);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      color: white;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    .timestamp {
+      color: #64748b;
+      font-size: 0.875rem;
+    }
+    
+    .answer-divider {
+      height: 1px;
+      background: linear-gradient(to right, #e2e8f0, transparent);
+    }
+    
+    .answer-container {
+      transition: background-color 0.2s ease;
+    }
+    
+    .answer-container:hover {
+      background-color: #f8fafc;
+    }
+    
+    .submit-button {
+      background: linear-gradient(45deg, #2563eb, #3b82f6);
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+    }
+    
+    .submit-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+    }
+    
+    .textarea-custom {
+      border: 2px solid #e2e8f0;
+      transition: all 0.2s ease;
+      resize: vertical;
+    }
+    
+    .textarea-custom:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    .avatar-custom {
+      border: 2px solid white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+
+  <div class="question-card p-8 max-w-4xl mx-auto my-8">
+    <!-- Question Details -->
+    <div class="flex flex-col gap-4 mb-8">
+      <div class="flex items-center gap-4">
+        <img src="{{ question.author.profile.avatar.url }}" alt="" class="w-10 h-10 rounded-full object-cover avatar-custom" />
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+          <span class="author-badge">{{ question.author.get_full_name }}</span>
+          <span class="timestamp">{{ question.created_at|timesince }} ago</span>
+        </div>
+      </div>
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ question.title }}</h1>
+        <p class="text-gray-700 leading-relaxed">{{ question.content }}</p>
+      </div>
+    </div>
+
+    <!-- Comments (Answers) Section -->
+    <div class="mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Comments</h2>
+      {% for answer in question.answers.all %}
+        <div class="answer-container rounded-lg p-4">
+          <div class="answer-divider mb-4"></div>
+          <div class="flex gap-4">
+            <img src="{{ answer.author.profile.avatar.url }}" alt="" class="w-10 h-10 rounded-full avatar-custom" />
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="font-semibold text-gray-900">{{ answer.author.get_full_name }}</span>
+                <span class="timestamp">{{ answer.created_at|timesince }} ago</span>
+              </div>
+              <p class="text-gray-700 leading-relaxed">{{ answer.content }}</p>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-gray-600 italic">No answers yet. Be the first to respond!</p>
+      {% endfor %}
+    </div>
+
+    <!-- Post an Answer Section -->
+    <div class="mt-12">
+      <h3 class="text-2xl font-bold text-gray-900 mb-6">Your Answer</h3>
+      <form method="post" action="{% url 'forum:answer_create' question.pk %}" class="space-y-4">
+        {% csrf_token %}
+        <textarea name="content" rows="6" class="textarea-custom w-full p-4 rounded-lg" placeholder="Share your thoughts..."></textarea>
+        <button type="submit" class="submit-button text-white px-8 py-3 rounded-lg font-semibold">Submit Answer</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

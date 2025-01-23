@@ -1,0 +1,160 @@
+{% extends 'users/base.html' %}
+
+{% block title %}
+  Forum
+{% endblock %}
+
+{% block content %}
+  <div class="mb-8 flex justify-between items-center">
+    <button onclick="location.href='{% url 'forum:question_create' %}'" class="btn-primary px-6 py-2 rounded-full">Start Asking</button>
+
+    <!-- Search Input -->
+    <div class="relative w-96">
+      <input type="text" placeholder="Search" class="input-primary w-full px-4 py-2 rounded-lg" />
+    </div>
+
+    <!-- Sorting Dropdown -->
+    <div class="relative">
+      <select id="sort-select" class="input-primary px-4 py-2 rounded-lg">
+        <option value="latest" data-sort="latest">Sort by Latest</option>
+        <option value="my-posts" data-sort="my-posts">My Posts</option>
+      </select>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const urlParams = new URLSearchParams(window.location.search)
+          const sortParam = urlParams.get('sort')
+        
+          const sortSelect = document.getElementById('sort-select')
+          if (sortParam) {
+            for (const option of sortSelect.options) {
+              if (option.getAttribute('data-sort') === sortParam) {
+                option.selected = true
+              }
+            }
+          }
+        })
+      </script>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-xl p-6 space-y-6">
+    {% for question in questions %}
+      <div id="question-{{ question.pk }}" class="p-6 border-b flex justify-between items-start hover:bg-gray-50 transition-all duration-300">
+        <div class="flex items-center space-x-4">
+          <img src="{{ question.author.profile.avatar.url }}" alt="" class="w-12 h-12 rounded-full object-cover border-2 border-blue-500" />
+          <div>
+            <span class="text-sm text-green-600 font-bold">{{ question.author.get_full_name }}</span>
+            <span class="text-sm text-gray-500">{{ question.created_at|timesince }} ago</span>
+          </div>
+        </div>
+
+        <!-- Delete button for user's posts -->
+        {% if question.author == request.user %}
+          <button onclick="deleteQuestion({{ question.pk }})" class="text-red-600 hover:text-red-900 transition-all duration-200">Delete</button>
+        {% endif %}
+      </div>
+
+      <h3 class="mt-2 text-2xl font-semibold text-gray-800 hover:text-blue-600 transition-all duration-300"><a href="{% url 'forum:question_detail' question.pk %}">{{ question.title }}</a></h3>
+      <p class="mt-2 text-gray-700">{{ question.content|truncatewords:50 }}</p>
+      <div class="mt-4 text-sm text-gray-600">{{ question.answers.count }} comments</div>
+    {% endfor %}
+  </div>
+
+  <!-- Pagination -->
+  <div class="mt-8 flex justify-center space-x-2">
+    {% if questions.has_previous %}
+      <a href="?page={{ questions.previous_page_number }}&sort={{ request.GET.sort }}" class="btn-primary px-4 py-2 rounded-lg">Previous</a>
+    {% endif %}
+
+    <span class="px-3 py-2 text-gray-600">Page {{ questions.number }} of {{ questions.paginator.num_pages }}</span>
+
+    {% if questions.has_next %}
+      <a href="?page={{ questions.next_page_number }}&sort={{ request.GET.sort }}" class="btn-primary px-4 py-2 rounded-lg">Next</a>
+    {% endif %}
+  </div>
+
+  <!-- JavaScript for Sorting and Deleting Posts -->
+  <script>
+    document.getElementById('sort-select').addEventListener('change', function () {
+      const sortOption = this.value
+      let url = new URL(window.location.href)
+      url.searchParams.set('sort', sortOption)
+      window.location.href = url.href
+    })
+    
+    function deleteQuestion(questionId) {
+      if (confirm('Are you sure you want to delete this question?')) {
+        fetch(`/forum/question/${questionId}/delete/`, {
+          method: 'DELETE',
+          headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+          }
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              document.getElementById(`question-${questionId}`).remove()
+            } else {
+              alert('Failed to delete question.')
+            }
+          })
+          .catch((error) => {
+            alert('An error occurred while deleting the question.')
+          })
+      }
+    }
+  </script>
+
+  <!-- Custom Styles -->
+  <style>
+    /* Button styling */
+    .btn-primary {
+      background-color: #2563eb;
+      color: white;
+      transition: background-color 0.3s ease;
+    }
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+    }
+    
+    /* Input and select styling */
+    .input-primary {
+      border: 2px solid #d1d5db;
+      transition: border-color 0.3s ease;
+    }
+    .input-primary:focus {
+      border-color: #2563eb;
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    }
+    
+    /* Card and content styling */
+    .bg-white {
+      background-color: white;
+    }
+    .hover\:bg-gray-50:hover {
+      background-color: #f9fafb;
+    }
+    .text-gray-700 {
+      color: #4a4a4a;
+    }
+    .text-gray-600 {
+      color: #6b7280;
+    }
+    .text-green-600 {
+      color: #10b981;
+    }
+    
+    /* Other custom styling */
+    .rounded-lg {
+      border-radius: 8px;
+    }
+    .shadow-xl {
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .transition-all {
+      transition: all 0.2s ease-in-out;
+    }
+  </style>
+{% endblock %}

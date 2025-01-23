@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News & Announcements</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <!-- <div class="logo">CampusCare</div> -->
+            <a href="{% url 'users-home' %}" class="logo"><strong>CampusCare</strong></a>
+            <input type="search" class="search-bar" placeholder="Search for news...">
+            <button class="profile-btn" onclick="window.location.href=''">Profile</button>
+            
+        </header>
+
+        <h2>Campus News & Announcements</h2>
+
+        <div class="news-announcements-container">
+            <div class="left-side">
+                <h3>News</h3>
+                <div class="scroll-container">
+                    {% for news_item in news %}
+                    <div class="card">
+                        <h4>{{ news_item.title }}</h4>
+                        <p>{{ news_item.content }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="right-side">
+                <h3>Announcements</h3>
+                <div class="scroll-container">
+                    {% for announcement in announcements %}
+                    <div class="card">
+                        <h4>{{ announcement.title }}</h4>
+                        <p>{{ announcement.content }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- <button onclick="window.location.href='home.html'">Back to Home</button> -->
+    </div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Portal</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .apply-btn {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .apply-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <!-- <div class="logo">University Portal</div> -->
+            <a href="{% url 'users-home' %}" class="logo"><strong>CampusCare</strong></a>
+            <input type="search" class="search-bar" placeholder="Search for jobs...">
+            <button class="profile-btn" onclick="window.location.href='profile.html'">Profile</button>
+        </header>
+
+        <h2>Job and Internship Opportunities</h2>
+
+        <div class="job-internship-container">
+            <div class="left-side">
+                <h3>Internships</h3>
+                <div class="scroll-container">
+                    {% for internship in internships %}
+                    <div class="card">
+                        <div class="card-content">
+                            <h4>{{ internship.title }}</h4>
+                            <p>{{ internship.description }}</p>
+                            <p><strong>Location:</strong> {{ internship.location }}</p>
+                        </div>
+                        <button class="apply-btn" onclick="window.location.href='/apply/internship/{{ forloop.counter }}'">Apply</button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        
+            <div class="right-side">
+                <h3>Jobs</h3>
+                <div class="scroll-container">
+                    {% for job in jobs %}
+                    <div class="card">
+                        <div class="card-content">
+                            <h4>{{ job.title }}</h4>
+                            <p>{{ job.description }}</p>
+                            <p><strong>Location:</strong> {{ job.location }}</p>
+                        </div>
+                        <button class="apply-btn" onclick="window.location.href='/apply/job/{{ forloop.counter }}'">Apply</button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- <a href="{% url 'users-home' %}" class="navbar-brand"><strong>Home</strong></a> -->
+    </div>
+</body>
+</html>

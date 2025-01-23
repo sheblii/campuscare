@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for {{ opportunity_type }}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">University Portal</div>
+        </header>
+
+        <h2>Apply for {{ opportunity_title }}</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" required><br><br>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required><br><br>
+
+            <label for="phone">Phone:</label>
+            <input type="tel" name="phone" id="phone" required><br><br>
+
+            <label for="cover_letter">Cover Letter:</label>
+            <textarea name="cover_letter" id="cover_letter" required></textarea><br><br>
+
+            <button type="submit">Submit Application</button>
+        </form>
+
+        <button onclick="window.location.href='/jobportal'">Back</button>
+    </div>
+</body>
+</html>

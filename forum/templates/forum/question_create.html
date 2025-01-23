@@ -1,0 +1,112 @@
+{% extends 'users/base.html' %}
+{% block title %}
+  Create a New Question
+{% endblock %}
+
+{% block content %}
+  <style>
+    .form-card {
+      background: linear-gradient(to bottom right, #ffffff, #f8fafc);
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s ease-in-out;
+    }
+    
+    .form-card:hover {
+      transform: translateY(-2px);
+    }
+    
+    .input-field {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+      font-size: 1rem;
+      color: #1f2937;
+    }
+    
+    .input-field:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    .input-label {
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.5rem;
+      display: block;
+      font-size: 0.875rem;
+    }
+    
+    .submit-button {
+      background: linear-gradient(45deg, #2563eb, #3b82f6);
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+      font-weight: 600;
+    }
+    
+    .submit-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+    }
+    
+    .errorlist {
+      color: #dc2626;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+      list-style-type: none;
+      padding: 0;
+    }
+  </style>
+
+  <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <div class="form-card max-w-2xl mx-auto p-8">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Create a New Question</h1>
+        <p class="mt-2 text-gray-600">Share your question with the community</p>
+      </div>
+
+      <form method="post" class="space-y-6">
+        {% csrf_token %}
+
+        <div>
+          <label class="input-label" for="{{ form.title.id_for_label }}">Question Title</label>
+          <input type="text" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}" class="input-field" placeholder="Enter your question title" value="{{ form.title.value|default:'' }}" />
+          {% if form.title.errors %}
+            <ul class="errorlist">
+              {% for error in form.title.errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+
+        <div>
+          <label class="input-label" for="{{ form.content.id_for_label }}">Question Content</label>
+          <textarea name="{{ form.content.name }}" id="{{ form.content.id_for_label }}" class="input-field" rows="6" placeholder="Describe your question in detail...">{{ form.content.value|default:'' }}</textarea>
+          {% if form.content.errors %}
+            <ul class="errorlist">
+              {% for error in form.content.errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+
+        {% if form.non_field_errors %}
+          <div class="rounded-md bg-red-50 p-4">
+            <ul class="errorlist">
+              {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        <button type="submit" class="submit-button w-full text-white px-6 py-3 rounded-lg">Post Question</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

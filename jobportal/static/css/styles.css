@@ -1,0 +1,227 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* General Container */
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #003366; /* Deep Blue */
+    padding: 15px 30px;
+    border-radius: 10px;
+}
+
+header .logo {
+    font-size: 24px;
+    color: #ffffff;
+    font-weight: bold;
+    text-align: center;
+    flex-grow: 1;
+}
+
+header .search-container {
+    display: flex;
+    align-items: center;
+}
+
+header .search-bar {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+}
+
+header .search-btn {
+    padding: 10px 20px;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+header .search-btn:hover {
+    background-color: #45a049;
+}
+
+/* Profile Button */
+header .profile-btn {
+    padding: 10px 20px;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+header .profile-btn:hover {
+    background-color: #45a049;
+}
+
+/* Main Content */
+.main-content {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.main-content .left-side,
+.main-content .center,
+.main-content .right-side {
+    width: 30%;
+    padding: 15px;
+    background-color: #fafafa;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.main-content .left-side:hover,
+.main-content .center:hover,
+.main-content .right-side:hover {
+    transform: scale(1.05);
+}
+
+.page-link {
+    display: block;
+    padding: 15px;
+    margin: 15px 0;
+    background-color: #007BFF; /* Blue */
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    text-decoration: none;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+.page-link:hover {
+    background-color: #0056b3; /* Darker Blue */
+}
+
+/* Button */
+button {
+    padding: 12px 20px;
+    background-color: #003366; /* Dark Blue */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="search"] {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="password"]:focus,
+form input[type="search"]:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+form button {
+    padding: 15px;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+}
+
+form button:hover {
+    background-color: #45a049;
+}
+
+/* Profile Section */
+.profile-photo {
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+/* Card Styling for News, Jobs, and Announcements */
+.card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+/* Footer Section */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 10px;
+    background-color: #003366;
+    color: white;
+    font-size: 14px;
+    border-radius: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .main-content .left-side,
+    .main-content .center,
+    .main-content .right-side {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
